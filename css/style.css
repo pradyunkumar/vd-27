@@ -1,0 +1,145 @@
+/* ============================================
+   Valentine's Day – replaceable background
+   Put your background image in this folder as
+   background.jpg (or change the path below).
+   ============================================ */
+.page {
+  --bg-image: url("../background.jpg");
+  min-height: 100vh;
+  background-color: #ffe4ec;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Nunito", sans-serif;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Screens */
+.screen {
+  display: none;
+  width: 100%;
+  max-width: 90vw;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.screen--active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Card (question screen) */
+.card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 2rem;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 12px 40px rgba(233, 30, 99, 0.15);
+  text-align: center;
+  max-width: 32rem;
+  border: 3px solid rgba(255, 182, 193, 0.6);
+}
+
+.message {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  color: #c2185b;
+  margin: 0 0 2rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 0.85rem 2rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn--yes {
+  background: linear-gradient(145deg, #e91e63, #f06292);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(233, 30, 99, 0.4);
+}
+
+.btn--no {
+  background: linear-gradient(145deg, #f8bbd9, #fce4ec);
+  color: #ad1457;
+  border: 2px solid rgba(194, 24, 91, 0.3);
+}
+
+/* No button when it's moving (absolute so we can position it randomly) */
+.btn--no.wandering {
+  position: fixed;
+  z-index: 10;
+}
+
+/* Success screen */
+.success-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 2rem;
+  padding: 2rem;
+  text-align: center;
+  max-width: 28rem;
+  box-shadow: 0 12px 40px rgba(233, 30, 99, 0.2);
+  border: 3px solid rgba(255, 182, 193, 0.6);
+}
+
+.success-message {
+  font-family: "Fredoka", sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: #c2185b;
+  margin: 0 0 1.5rem;
+  font-weight: 600;
+}
+
+.final-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 1.25rem;
+  display: block;
+  margin: 0 auto;
+  object-fit: cover;
+}
+
+/* Yes button scale-up after No is clicked */
+.btn--yes.bigger {
+  transform: scale(1.2);
+}
+
+.btn--yes.bigger:hover {
+  transform: scale(1.25);
+}
