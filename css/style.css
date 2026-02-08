@@ -4,7 +4,7 @@
    background.jpg (or change the path below).
    ============================================ */
 .page {
-  --bg-image: url("../background.jpg");
+  --bg-image: url("../images/background.png");
   min-height: 100vh;
   background-color: #ffe4ec;
   background-image: var(--bg-image);
@@ -47,6 +47,21 @@
   text-align: center;
   max-width: 32rem;
   border: 3px solid rgba(255, 182, 193, 0.6);
+}
+
+/* Pre-pick image in card – white background blended out */
+.card-image {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto 1rem;
+  object-fit: contain;
+}
+
+/* Makes white in images blend with background (appears clear) */
+.no-white-bg {
+  mix-blend-mode: multiply;
 }
 
 .message {
@@ -98,12 +113,34 @@
   background: linear-gradient(145deg, #f8bbd9, #fce4ec);
   color: #ad1457;
   border: 2px solid rgba(194, 24, 91, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* No button when it's moving (absolute so we can position it randomly) */
+.btn-no-image {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  margin-right: 0.35rem;
+}
+
+.btn-no-text {
+  position: relative;
+}
+
+/* No button when wandering (moves on hover) */
 .btn--no.wandering {
   position: fixed;
   z-index: 10;
+}
+
+/* No button hidden after Yes is clicked */
+.btn--no.hidden {
+  display: none !important;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 /* Success screen */
@@ -132,7 +169,7 @@
   border-radius: 1.25rem;
   display: block;
   margin: 0 auto;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* Yes button scale-up after No is clicked */

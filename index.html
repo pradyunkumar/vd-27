@@ -10,14 +10,17 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Replace background: put your image in this folder and name it background.jpg (or edit the path in css/style.css) -->
   <main class="page">
     <section id="question-screen" class="screen screen--active">
       <div class="card">
+        <img src="images/pre-pick.png" alt="" class="card-image no-white-bg" />
         <h1 class="message">Will you be my Valentine?</h1>
         <div class="buttons">
           <button type="button" id="btn-yes" class="btn btn--yes">Yes</button>
-          <button type="button" id="btn-no" class="btn btn--no">No</button>
+          <button type="button" id="btn-no" class="btn btn--no">
+            <img src="images/no-click.png" alt="No" class="btn-no-image no-white-bg" />
+            <span class="btn-no-text">No</span>
+          </button>
         </div>
       </div>
     </section>
@@ -25,8 +28,7 @@
     <section id="success-screen" class="screen">
       <div class="success-content">
         <p class="success-message">Yay! Happy Valentine's Day!</p>
-        <!-- Replace final image: put your image in this folder and name it final.jpg (or edit the path below) -->
-        <img src="final.jpg" alt="Happy Valentine's Day" class="final-image" id="final-image" />
+        <img src="images/yes-click.png" alt="Happy Valentine's Day" class="final-image no-white-bg" id="final-image" />
       </div>
     </section>
   </main>

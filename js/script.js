@@ -65,15 +65,19 @@
   }
 
   function showSuccess() {
+    btnNo.classList.add("hidden");
     fireConfetti();
     questionScreen.classList.remove("screen--active");
     successScreen.classList.add("screen--active");
   }
 
-  btnNo.addEventListener("click", function () {
+  function onNoHover() {
     moveNoButton();
     makeYesBigger();
-  });
+  }
+
+  btnNo.addEventListener("mouseenter", onNoHover);
+  btnNo.addEventListener("mouseover", onNoHover);
 
   btnYes.addEventListener("click", function () {
     showSuccess();
