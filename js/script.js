@@ -5,30 +5,85 @@
   var successScreen = document.getElementById("success-screen");
   var btnYes = document.getElementById("btn-yes");
   var btnNo = document.getElementById("btn-no");
-  var noClickCount = 0;
 
-  function getRandomPosition() {
-    var padding = 80;
-    var maxX = window.innerWidth - padding * 2;
-    var maxY = window.innerHeight - padding * 2;
-    var x = padding + Math.random() * Math.max(0, maxX);
-    var y = padding + Math.random() * Math.max(0, maxY);
-    return { x: x, y: y };
+  var mouseX = -1e5;
+  var mouseY = -1e5;
+  var noIsWandering = false;
+  var yesGotBigger = false;
+
+  var MIN_DISTANCE = 140;   /* No button keeps this many px from cursor */
+  var PADDING = 50;        /* Button center stays within page bounds */
+  var FLEE_SPEED = 12;    /* How fast the button runs away per frame */
+
+  function getNoCenter() {
+    var left = parseFloat(btnNo.style.left);
+    var top = parseFloat(btnNo.style.top);
+    if (isNaN(left) || isNaN(top)) return null;
+    return { x: left, y: top };
   }
 
-  function moveNoButton() {
-    var pos = getRandomPosition();
+  function setNoCenter(x, y) {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    x = Math.max(PADDING, Math.min(w - PADDING, x));
+    y = Math.max(PADDING, Math.min(h - PADDING, y));
+    btnNo.style.left = x + "px";
+    btnNo.style.top = y + "px";
+  }
+
+  function distance(ax, ay, bx, by) {
+    return Math.sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay));
+  }
+
+  function startFleeing() {
+    if (noIsWandering) return;
+    noIsWandering = true;
     btnNo.classList.add("wandering");
-    btnNo.style.left = pos.x + "px";
-    btnNo.style.top = pos.y + "px";
-    btnNo.style.transform = "translate(-50%, -50%)";
-    // Move node to body so the card layout only shows Yes
     document.body.appendChild(btnNo);
+
+    var rect = btnNo.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    btnNo.style.left = cx + "px";
+    btnNo.style.top = cy + "px";
+    btnNo.style.transform = "translate(-50%, -50%)";
+
+    if (!yesGotBigger) {
+      yesGotBigger = true;
+      btnYes.classList.add("bigger");
+    }
   }
 
-  function makeYesBigger() {
-    noClickCount += 1;
-    btnYes.classList.add("bigger");
+  function updateFlee() {
+    if (!noIsWandering || btnNo.classList.contains("hidden")) return;
+
+    var center = getNoCenter();
+    if (!center) return;
+
+    var d = distance(mouseX, mouseY, center.x, center.y);
+    if (d < MIN_DISTANCE && d > 0) {
+      var dx = (center.x - mouseX) / d;
+      var dy = (center.y - mouseY) / d;
+      var move = Math.min(FLEE_SPEED, MIN_DISTANCE - d);
+      setNoCenter(center.x + dx * move, center.y + dy * move);
+    }
+  }
+
+  function onMouseMove(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    if (!noIsWandering) {
+      var rect = btnNo.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      if (distance(mouseX, mouseY, cx, cy) < MIN_DISTANCE) {
+        startFleeing();
+      }
+      return;
+    }
+
+    updateFlee();
   }
 
   function fireConfetti() {
@@ -71,13 +126,31 @@
     successScreen.classList.add("screen--active");
   }
 
-  function onNoHover() {
-    moveNoButton();
-    makeYesBigger();
+  function tick() {
+    updateFlee();
+    requestAnimationFrame(tick);
   }
+  requestAnimationFrame(tick);
 
-  btnNo.addEventListener("mouseenter", onNoHover);
-  btnNo.addEventListener("mouseover", onNoHover);
+  window.addEventListener("mousemove", onMouseMove);
+
+  /* Touch: use first touch for "cursor" position so it works on mobile */
+  window.addEventListener("touchmove", function (e) {
+    if (e.touches.length) {
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
+      if (!noIsWandering) {
+        var rect = btnNo.getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+        if (distance(mouseX, mouseY, cx, cy) < MIN_DISTANCE) {
+          startFleeing();
+        }
+      } else {
+        updateFlee();
+      }
+    }
+  }, { passive: true });
 
   btnYes.addEventListener("click", function () {
     showSuccess();
