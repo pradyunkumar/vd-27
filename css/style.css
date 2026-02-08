@@ -143,6 +143,32 @@
   visibility: hidden;
 }
 
+/* No clicked screen – big no-click image + Try again */
+.no-clicked-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 2rem;
+  padding: 2rem;
+  text-align: center;
+  max-width: 36rem;
+  box-shadow: 0 12px 40px rgba(233, 30, 99, 0.2);
+  border: 3px solid rgba(255, 182, 193, 0.6);
+}
+
+.no-clicked-image {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  display: block;
+  margin: 0 auto 1.5rem;
+  object-fit: contain;
+}
+
+.btn--try-again {
+  background: linear-gradient(145deg, #e91e63, #f06292);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(233, 30, 99, 0.4);
+}
+
 /* Success screen */
 .success-content {
   background: rgba(255, 255, 255, 0.95);

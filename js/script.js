@@ -3,8 +3,11 @@
 
   var questionScreen = document.getElementById("question-screen");
   var successScreen = document.getElementById("success-screen");
+  var noClickedScreen = document.getElementById("no-clicked-screen");
+  var buttonsContainer = document.querySelector("#question-screen .buttons");
   var btnYes = document.getElementById("btn-yes");
   var btnNo = document.getElementById("btn-no");
+  var btnTryAgain = document.getElementById("btn-try-again");
 
   var mouseX = -1e5;
   var mouseY = -1e5;
@@ -130,7 +133,33 @@
     btnNo.classList.add("hidden");
     fireConfetti();
     questionScreen.classList.remove("screen--active");
+    noClickedScreen.classList.remove("screen--active");
     successScreen.classList.add("screen--active");
+  }
+
+  function showNoClicked() {
+    questionScreen.classList.remove("screen--active");
+    successScreen.classList.remove("screen--active");
+    noClickedScreen.classList.add("screen--active");
+    btnNo.classList.add("hidden");
+  }
+
+  function tryAgain() {
+    noClickedScreen.classList.remove("screen--active");
+    successScreen.classList.remove("screen--active");
+    questionScreen.classList.add("screen--active");
+
+    btnNo.classList.remove("hidden", "wandering");
+    btnNo.style.left = "";
+    btnNo.style.top = "";
+    btnNo.style.transform = "";
+    if (buttonsContainer) {
+      buttonsContainer.appendChild(btnNo);
+    }
+
+    noIsWandering = false;
+    yesGotBigger = false;
+    btnYes.classList.remove("bigger");
   }
 
   function tick() {
@@ -159,7 +188,13 @@
     }
   }, { passive: true });
 
+  btnNo.addEventListener("click", function () {
+    showNoClicked();
+  });
+
   btnYes.addEventListener("click", function () {
     showSuccess();
   });
+
+  btnTryAgain.addEventListener("click", tryAgain);
 })();
