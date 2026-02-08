@@ -1,6 +1,6 @@
 # Valentine's Day 💕
 
-A small Valentine's Day page. Live: **https://pradyunkumar.github.io/joe-vd-26/**
+A small Valentine's Day page. Live: **https://pradyunkumar.github.io/vd-27/**
 
 ## Replacing images
 
