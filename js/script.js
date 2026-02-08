@@ -11,9 +11,9 @@
   var noIsWandering = false;
   var yesGotBigger = false;
 
-  var MIN_DISTANCE = 140;   /* No button keeps this many px from cursor */
-  var PADDING = 50;        /* Button center stays within page bounds */
-  var FLEE_SPEED = 12;    /* How fast the button runs away per frame */
+  var MIN_DISTANCE = 120;   /* No button keeps this many px from cursor */
+  var PADDING = 50;         /* Button center stays within page bounds */
+  var SMOOTH = 0.14;        /* 0–1: how quickly it glides away (higher = snappier) */
 
   function getNoCenter() {
     var left = parseFloat(btnNo.style.left);
@@ -61,11 +61,18 @@
     if (!center) return;
 
     var d = distance(mouseX, mouseY, center.x, center.y);
-    if (d < MIN_DISTANCE && d > 0) {
-      var dx = (center.x - mouseX) / d;
-      var dy = (center.y - mouseY) / d;
-      var move = Math.min(FLEE_SPEED, MIN_DISTANCE - d);
-      setNoCenter(center.x + dx * move, center.y + dy * move);
+    if (d < 1) return; /* avoid div by zero */
+
+    /* Direction from cursor to button (button runs this way) */
+    var dx = (center.x - mouseX) / d;
+    var dy = (center.y - mouseY) / d;
+
+    if (d < MIN_DISTANCE) {
+      /* Glide away: move a fraction of the gap each frame for smooth chase */
+      var gap = MIN_DISTANCE - d;
+      var moveX = dx * gap * SMOOTH;
+      var moveY = dy * gap * SMOOTH;
+      setNoCenter(center.x + moveX, center.y + moveY);
     }
   }
 
